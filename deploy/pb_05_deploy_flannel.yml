@@ -1,0 +1,11 @@
+- hosts: k8s-master
+  remote_user: root
+  
+  tasks:
+    
+    - name: copy flannel yaml file
+      copy: src=./kube-flannel.yml dest=/tmp/ owner=root group=root mode=0644
+
+    - name: install flannel
+      shell: kubectl apply -f /tmp/kube-flannel.yml
+

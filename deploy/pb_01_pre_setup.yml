@@ -1,0 +1,12 @@
+- hosts: k8s-all
+  remote_user: root
+
+  tasks:
+    - name: pre_setup
+      script: ./pre_setup.sh
+
+    - name: backup /etc/hosts
+      shell: mv /etc/hosts /etc/hosts_bak
+
+    - name: copy local hosts file to remote
+      copy: src=./hosts dest=/etc/ owner=root group=root mode=0644 

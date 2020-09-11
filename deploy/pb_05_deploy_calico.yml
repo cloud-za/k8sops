@@ -1,0 +1,11 @@
+- hosts: k8s-master
+  remote_user: root
+  
+  tasks:
+    
+    - name: copy calico yaml file
+      copy: src=./calico.yml dest=/tmp/ owner=root group=root mode=0644
+
+    - name: install calico
+      shell: kubectl apply -f /tmp/calico.yml
+

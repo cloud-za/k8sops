@@ -1,0 +1,27 @@
+- hosts: k8s-all
+  remote_user: root
+  vars: 
+     docker_version: 19.03.12
+
+  tasks: 
+     - name: install dependencies
+       #shell: yum install -y yum-utils device-mapper-persistent-data lvm2 
+       yum: name={{item}} state=present
+       with_items:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+
+     - name: config yum repo
+       shell: yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+
+     - name: install docker
+       yum: name={{item}} state=present
+       with_items:
+           - docker-ce-{{docker_version}}
+           - docker-ce-cli-{{docker_version}}
+           - containerd.io
+
+     - name: postsetup
+       script: ./docker_post.sh
+             
